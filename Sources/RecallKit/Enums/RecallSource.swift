@@ -25,6 +25,8 @@ public enum RecallSource: String, Sendable, Codable, CaseIterable, Hashable, Com
     case notes
     /// Voice Memos: titles, and what was said where Apple transcribed it.
     case memos
+    /// Apple Journal: entries' titles and words, map places, recorded and handwritten words.
+    case journal
 
     /// The sources in a fixed order, so results and reports read the same every time.
     public static func < (lhs: RecallSource, rhs: RecallSource) -> Bool {

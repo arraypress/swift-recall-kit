@@ -1,5 +1,5 @@
 {
-  "originHash" : "06cafa35659ea3eda2922ae7c689252f858bba3bd20d9a121c14d76e531386f2",
+  "originHash" : "181ec8a342fb15358905a9b9a189b2a108f25a8e47e05afb0ad9f742decaa4d7",
   "pins" : [
     {
       "identity" : "swift-agenda-kit",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "bd9564659fd17dff22679bc24fb46283baa9defc",
         "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swift-apple-journal",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-apple-journal.git",
+      "state" : {
+        "revision" : "22d1c4ba899137efa5a6ed9b4eafb7a71b6b6f65",
+        "version" : "0.1.0"
       }
     },
     {

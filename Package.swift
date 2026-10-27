@@ -20,6 +20,7 @@ let package = Package(
         .package(url: "https://github.com/arraypress/swift-agenda-kit.git", from: "0.3.0"),
         .package(url: "https://github.com/arraypress/swift-voice-recordings.git", from: "0.1.0"),
         .package(url: "https://github.com/arraypress/swift-call-log.git", from: "0.1.0"),
+        .package(url: "https://github.com/arraypress/swift-apple-journal.git", from: "0.1.0"),
         // A person's name to their phones and email addresses.
         .package(url: "https://github.com/arraypress/swift-contacts.git", from: "0.1.1"),
     ],
@@ -34,6 +35,7 @@ let package = Package(
                 .product(name: "AgendaKit", package: "swift-agenda-kit"),
                 .product(name: "VoiceRecordings", package: "swift-voice-recordings"),
                 .product(name: "CallLog", package: "swift-call-log"),
+                .product(name: "AppleJournal", package: "swift-apple-journal"),
                 .product(name: "ContactsKit", package: "swift-contacts"),
             ]
         ),
