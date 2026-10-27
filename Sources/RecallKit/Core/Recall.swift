@@ -5,14 +5,15 @@
 //  Created by David Sherlock on 2026.
 //
 //  One search across everything said and written on this Mac: Mail,
-//  Messages, WhatsApp, calls, Calendar, Reminders, Notes, Voice Memos and
-//  Journal.
+//  Messages, WhatsApp, calls, Calendar, Reminders, Notes, Voice Memos,
+//  Journal and Freeform.
 //  Each source is read through its own library, read-only; one that can't be
 //  read (no Full Disk Access, WhatsApp not installed, Calendar refused) is
 //  skipped and reported, and the rest still answer.
 //
 
 import AgendaKit
+import AppleFreeform
 import AppleJournal
 import AppleMail
 import AppleMessages
@@ -24,7 +25,7 @@ import Foundation
 import VoiceRecordings
 import WhatsAppMessages
 
-/// Searches Mail, Messages, WhatsApp, calls, Calendar, Reminders, Notes, Voice Memos and Journal at once.
+/// Searches Mail, Messages, WhatsApp, calls, Calendar, Reminders, Notes, Voice Memos, Journal and Freeform at once.
 ///
 /// ```swift
 /// let found = try await Recall.search(RecallQuery(text: "boiler", person: "Alex"))
@@ -73,6 +74,7 @@ public enum Recall {
         open(.notes) { NotesSearcher(store: try NoteStore()) }
         open(.memos) { MemosSearcher(store: RecordingStore()) }
         open(.journal) { JournalSearcher(store: try JournalStore()) }
+        open(.freeform) { FreeformSearcher(store: try FreeformStore()) }
 
         let contacts = people.map { PersonMatch.Contact(name: $0.displayName, phones: $0.phoneNumbers.map(\.value),
                                                         emails: $0.emailAddresses.map(\.value)) }
@@ -99,6 +101,7 @@ public enum Recall {
             (.notes, { _ = try NoteStore() }),
             (.memos, { _ = try RecordingStore().recordings(readFiles: false) }),
             (.journal, { _ = try JournalStore() }),
+            (.freeform, { _ = try FreeformStore() }),
         ]
         return openers.map { source, open in
             do {

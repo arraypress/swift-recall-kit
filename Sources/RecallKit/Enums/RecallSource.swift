@@ -27,6 +27,8 @@ public enum RecallSource: String, Sendable, Codable, CaseIterable, Hashable, Com
     case memos
     /// Apple Journal: entries' titles and words, map places, recorded and handwritten words.
     case journal
+    /// Freeform: what is written on boards — text, sticky notes, table cells, links.
+    case freeform
 
     /// The sources in a fixed order, so results and reports read the same every time.
     public static func < (lhs: RecallSource, rhs: RecallSource) -> Bool {

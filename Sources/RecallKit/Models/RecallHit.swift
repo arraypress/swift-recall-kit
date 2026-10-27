@@ -32,6 +32,8 @@ public struct RecallHit: Sendable, Equatable, Codable {
     public var excerpt: String
     /// Where in a recording the words were said, in seconds.
     public var at: Double?
+    /// What it sits in, by its own source's id — a Freeform item's board.
+    public var parent: String?
 
     /// A hit.
     ///
@@ -46,9 +48,10 @@ public struct RecallHit: Sendable, Equatable, Codable {
     ///   - conversation: The conversation's row.
     ///   - excerpt: The words around the match.
     ///   - at: Where in a recording the words were said.
+    ///   - parent: What it sits in, by its source's id.
     public init(source: RecallSource, id: String, date: Date, from: String? = nil, address: String? = nil,
                 isFromMe: Bool = false, title: String? = nil, conversation: Int64? = nil, excerpt: String,
-                at: Double? = nil) {
+                at: Double? = nil, parent: String? = nil) {
         self.source = source
         self.id = id
         self.date = date
@@ -59,5 +62,6 @@ public struct RecallHit: Sendable, Equatable, Codable {
         self.conversation = conversation
         self.excerpt = excerpt
         self.at = at
+        self.parent = parent
     }
 }
