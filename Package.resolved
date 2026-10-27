@@ -1,0 +1,60 @@
+{
+  "originHash" : "0a4b039459c9cca39dd2ac67c6f234ae28859a18f873e69864c0e0a45cd78373",
+  "pins" : [
+    {
+      "identity" : "swift-app-automation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-app-automation.git",
+      "state" : {
+        "revision" : "bd9564659fd17dff22679bc24fb46283baa9defc",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swift-apple-mail",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-apple-mail.git",
+      "state" : {
+        "revision" : "05258b0fc094abf80dafa68652e71b8ee539375c",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swift-apple-messages",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-apple-messages.git",
+      "state" : {
+        "revision" : "83235bd8f019561b8719df3f16abe483f170808c",
+        "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "swift-apple-notes",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-apple-notes.git",
+      "state" : {
+        "revision" : "ca1e40161083d2cc0315438cbb281bd487c9cdd6",
+        "version" : "0.1.1"
+      }
+    },
+    {
+      "identity" : "swift-contacts",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-contacts.git",
+      "state" : {
+        "revision" : "70386126db2a6a589f999687bea549200e5991ea",
+        "version" : "0.1.1"
+      }
+    },
+    {
+      "identity" : "swift-whatsapp-messages",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-whatsapp-messages.git",
+      "state" : {
+        "revision" : "c4986fc75e9eba51845a9387e0ce5943a8896074",
+        "version" : "0.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}
