@@ -5,22 +5,27 @@
 //  Created by David Sherlock on 2026.
 //
 //  One search across everything said and written on this Mac: Mail,
-//  Messages, WhatsApp and Notes. Each source is read through its own
-//  library, read-only; one that can't be read (no Full Disk Access, WhatsApp
-//  not installed) is skipped and reported, and the rest still answer.
+//  Messages, WhatsApp, calls, Calendar, Reminders, Notes and Voice Memos.
+//  Each source is read through its own library, read-only; one that can't be
+//  read (no Full Disk Access, WhatsApp not installed, Calendar refused) is
+//  skipped and reported, and the rest still answer.
 //
 
+import AgendaKit
 import AppleMail
 import AppleMessages
 import AppleNotes
+import CallLog
 import ContactsKit
+import EventKit
 import Foundation
+import VoiceRecordings
 import WhatsAppMessages
 
-/// Searches Mail, Messages, WhatsApp and Notes at once.
+/// Searches Mail, Messages, WhatsApp, calls, Calendar, Reminders, Notes and Voice Memos at once.
 ///
 /// ```swift
-/// let found = try Recall.search(RecallQuery(text: "boiler", person: "Alex"))
+/// let found = try await Recall.search(RecallQuery(text: "boiler", person: "Alex"))
 /// for hit in found.hits { print(hit.date, hit.source, hit.from ?? "", hit.excerpt) }
 /// found.skipped   // [notes: notes have no sender]
 /// ```
@@ -32,7 +37,7 @@ public enum Recall {
     /// - Returns: The hits, each source's count, and the sources skipped with why.
     /// - Throws: ``RecallError/nothingToFind`` without words or a person;
     ///   ``RecallError/nothingSearched(_:)`` when no source could be read.
-    public static func search(_ query: RecallQuery) throws -> RecallResult {
+    public static func search(_ query: RecallQuery) async throws -> RecallResult {
         let query = normalised(query)
         guard query.text != nil || query.person != nil else { throw RecallError.nothingToFind }
 
@@ -40,7 +45,7 @@ public enum Recall {
         // name Messages' senders. Without access, both degrade and say so.
         var people: [Person] = []
         var contactsProblem: String?
-        let needsContacts = query.sources.contains(.messages)
+        let needsContacts = query.sources.contains(.messages) || query.sources.contains(.calls)
             || (query.person.map { !PersonMatch.isAddress($0) } ?? false)
         if needsContacts {
             do { people = try ContactStore().all() } catch { contactsProblem = error.localizedDescription }
@@ -60,28 +65,43 @@ public enum Recall {
                              contactsProblem: contactsProblem)
         }
         open(.whatsapp) { WhatsAppSearcher(store: try WhatsAppStore()) }
+        open(.calls) { CallsSearcher(store: CallLogStore()) }
+        open(.calendar) { CalendarSearcher() }
+        open(.reminders) { RemindersSearcher() }
         open(.notes) { NotesSearcher(store: try NoteStore()) }
+        open(.memos) { MemosSearcher(store: RecordingStore()) }
 
         let contacts = people.map { PersonMatch.Contact(name: $0.displayName, phones: $0.phoneNumbers.map(\.value),
                                                         emails: $0.emailAddresses.map(\.value)) }
-        return try run(query, searchers: searchers, skipped: skipped, contacts: contacts)
+        return try await run(query, searchers: searchers, skipped: skipped, contacts: contacts)
     }
 
     /// Whether each source can be read on this Mac: each store opened and
-    /// closed again, nothing searched.
+    /// closed again — or, for Calendar and Reminders, the access asked
+    /// about — nothing searched.
     ///
     /// - Returns: One answer per source, in order.
     public static func availability() -> [RecallAvailability] {
+        func granted(_ entity: EKEntityType, _ name: String) throws {
+            let access = Agenda.access(to: entity)
+            guard access == .authorized else { throw SkipReason("\(name) access is \(access.rawValue)") }
+        }
         let openers: [(RecallSource, () throws -> Void)] = [
             (.mail, { _ = try MailStore() }),
             (.messages, { _ = try MessageStore() }),
             (.whatsapp, { _ = try WhatsAppStore() }),
+            (.calls, { _ = try CallLogStore().calls() }),
+            (.calendar, { try granted(.event, "Calendar") }),
+            (.reminders, { try granted(.reminder, "Reminders") }),
             (.notes, { _ = try NoteStore() }),
+            (.memos, { _ = try RecordingStore().recordings(readFiles: false) }),
         ]
         return openers.map { source, open in
             do {
                 try open()
                 return RecallAvailability(source: source, readable: true)
+            } catch let reason as SkipReason {
+                return RecallAvailability(source: source, readable: false, reason: reason.text)
             } catch {
                 return RecallAvailability(source: source, readable: false, reason: error.localizedDescription)
             }
@@ -90,7 +110,7 @@ public enum Recall {
 
     /// The search over searchers already open — the part tests drive.
     static func run(_ query: RecallQuery, searchers: [any RecallSearching], skipped opened: [RecallSkip],
-                    contacts: [PersonMatch.Contact]) throws -> RecallResult {
+                    contacts: [PersonMatch.Contact]) async throws -> RecallResult {
         let query = normalised(query)
         guard query.text != nil || query.person != nil else { throw RecallError.nothingToFind }
         let person = query.person.map { PersonMatch.person($0, contacts: contacts) }
@@ -99,7 +119,7 @@ public enum Recall {
         var unread = 0
         for searcher in searchers {
             do {
-                let found = try searcher.hits(for: query, person: person)
+                let found = try await searcher.hits(for: query, person: person)
                 lists[searcher.source] = found.hits
                 unread += found.unreadBodies
             } catch let reason as SkipReason {

@@ -20,7 +20,7 @@ struct MessagesSearcher: RecallSearching {
     let contactsProblem: String?
     let source = RecallSource.messages
 
-    func hits(for query: RecallQuery, person: RecallPerson?) throws -> (hits: [RecallHit], unreadBodies: Int) {
+    func hits(for query: RecallQuery, person: RecallPerson?) async throws -> (hits: [RecallHit], unreadBodies: Int) {
         var senders: [String?] = [nil]
         if let person {
             senders = person.phones + person.emails
@@ -36,7 +36,7 @@ struct MessagesSearcher: RecallSearching {
                                                            until: query.until, limit: query.limit))
             found += messages.map { message in
                 let handle = message.sender.map { names?.named($0) ?? $0 }
-                return RecallHit(source: .messages, id: message.id, date: message.date,
+                return RecallHit(source: .messages, id: String(message.id), date: message.date,
                                  from: message.isFromMe ? "me" : handle.map { $0.name ?? $0.address },
                                  address: message.isFromMe ? nil : handle?.address, isFromMe: message.isFromMe,
                                  title: message.chatID.flatMap { titles[$0] }, conversation: message.chatID,

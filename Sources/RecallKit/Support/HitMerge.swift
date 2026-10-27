@@ -29,7 +29,7 @@ enum HitMerge {
 
     /// Hits with each row once, the first kept.
     static func deduplicated(_ hits: [RecallHit]) -> [RecallHit] {
-        var seen: Set<Int64> = []
+        var seen: Set<String> = []
         return hits.filter { seen.insert($0.id).inserted }
     }
 

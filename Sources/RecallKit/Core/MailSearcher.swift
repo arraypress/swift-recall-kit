@@ -17,7 +17,7 @@ struct MailSearcher: RecallSearching {
     let store: MailStore
     let source = RecallSource.mail
 
-    func hits(for query: RecallQuery, person: RecallPerson?) throws -> (hits: [RecallHit], unreadBodies: Int) {
+    func hits(for query: RecallQuery, person: RecallPerson?) async throws -> (hits: [RecallHit], unreadBodies: Int) {
         let senders = MailSearcher.senders(for: person)
         var found: [RecallHit] = []
         for sender in senders {
@@ -31,7 +31,7 @@ struct MailSearcher: RecallSearching {
             for sender in senders {
                 let candidates = try store.search(MailQuery(from: sender, since: query.since, until: query.until,
                                                             incomingOnly: false, limit: query.bodyBudget))
-                for message in candidates where !matched.contains(message.id) {
+                for message in candidates where !matched.contains(String(message.id)) {
                     guard let body = try? store.body(of: message.id) else { unread += 1; continue }
                     if Excerpt.matches(text, in: body.text) {
                         found.append(hit(message, excerpt: Excerpt.around(text, in: body.text)))
@@ -52,7 +52,7 @@ struct MailSearcher: RecallSearching {
     }
 
     private func hit(_ message: Message, excerpt: String) -> RecallHit {
-        RecallHit(source: .mail, id: message.id, date: message.receivedAt, from: message.sender.shortName,
+        RecallHit(source: .mail, id: String(message.id), date: message.receivedAt, from: message.sender.shortName,
                   address: message.sender.address, isFromMe: MailSearcher.isSent(message.mailbox),
                   title: message.displaySubject, conversation: message.conversationID, excerpt: excerpt)
     }

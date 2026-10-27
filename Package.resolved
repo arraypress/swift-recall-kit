@@ -1,6 +1,15 @@
 {
-  "originHash" : "0a4b039459c9cca39dd2ac67c6f234ae28859a18f873e69864c0e0a45cd78373",
+  "originHash" : "06cafa35659ea3eda2922ae7c689252f858bba3bd20d9a121c14d76e531386f2",
   "pins" : [
+    {
+      "identity" : "swift-agenda-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-agenda-kit.git",
+      "state" : {
+        "revision" : "3bb8466a5ece84636cacc377cf60f77dac49e592",
+        "version" : "0.3.0"
+      }
+    },
     {
       "identity" : "swift-app-automation",
       "kind" : "remoteSourceControl",
@@ -38,12 +47,39 @@
       }
     },
     {
+      "identity" : "swift-call-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-call-log.git",
+      "state" : {
+        "revision" : "f37a639567d727497bee66a3d444aa1056f93adf",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "swift-contacts",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/arraypress/swift-contacts.git",
       "state" : {
         "revision" : "70386126db2a6a589f999687bea549200e5991ea",
         "version" : "0.1.1"
+      }
+    },
+    {
+      "identity" : "swift-subtitle-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-subtitle-kit.git",
+      "state" : {
+        "revision" : "68a355c9baa3ca36ee55e028dbd4bd3106ecaa18",
+        "version" : "0.1.0"
+      }
+    },
+    {
+      "identity" : "swift-voice-recordings",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-voice-recordings.git",
+      "state" : {
+        "revision" : "eaa47b4f578d56ff2361dd40a792298adc3bf198",
+        "version" : "0.1.0"
       }
     },
     {

@@ -4,9 +4,10 @@ import PackageDescription
 let package = Package(
     name: "swift-recall-kit",
     // macOS only, and not by choice: every store this searches — Mail's
-    // index, the Messages and WhatsApp databases, Notes — exists only on a Mac.
+    // index, the Messages and WhatsApp databases, Notes, calls — exists only on
+    // a Mac. 15 is swift-agenda-kit's floor.
     platforms: [
-        .macOS(.v14)
+        .macOS(.v15)
     ],
     products: [
         .library(name: "RecallKit", targets: ["RecallKit"]),
@@ -16,6 +17,9 @@ let package = Package(
         .package(url: "https://github.com/arraypress/swift-apple-messages.git", from: "0.4.0"),
         .package(url: "https://github.com/arraypress/swift-whatsapp-messages.git", from: "0.1.0"),
         .package(url: "https://github.com/arraypress/swift-apple-notes.git", from: "0.1.1"),
+        .package(url: "https://github.com/arraypress/swift-agenda-kit.git", from: "0.3.0"),
+        .package(url: "https://github.com/arraypress/swift-voice-recordings.git", from: "0.1.0"),
+        .package(url: "https://github.com/arraypress/swift-call-log.git", from: "0.1.0"),
         // A person's name to their phones and email addresses.
         .package(url: "https://github.com/arraypress/swift-contacts.git", from: "0.1.1"),
     ],
@@ -27,6 +31,9 @@ let package = Package(
                 .product(name: "AppleMessages", package: "swift-apple-messages"),
                 .product(name: "WhatsAppMessages", package: "swift-whatsapp-messages"),
                 .product(name: "AppleNotes", package: "swift-apple-notes"),
+                .product(name: "AgendaKit", package: "swift-agenda-kit"),
+                .product(name: "VoiceRecordings", package: "swift-voice-recordings"),
+                .product(name: "CallLog", package: "swift-call-log"),
                 .product(name: "ContactsKit", package: "swift-contacts"),
             ]
         ),

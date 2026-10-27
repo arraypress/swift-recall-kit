@@ -17,7 +17,7 @@ struct NotesSearcher: RecallSearching {
     let store: NoteStore
     let source = RecallSource.notes
 
-    func hits(for query: RecallQuery, person: RecallPerson?) throws -> (hits: [RecallHit], unreadBodies: Int) {
+    func hits(for query: RecallQuery, person: RecallPerson?) async throws -> (hits: [RecallHit], unreadBodies: Int) {
         guard person == nil else { throw SkipReason("notes have no sender") }
         guard let text = query.text else { throw SkipReason("notes need words to find") }
         var found = try store.search(text)
@@ -28,7 +28,7 @@ struct NotesSearcher: RecallSearching {
         if query.bodies {
             let matched = Set(found.map(\.id))
             for listed in try store.notes(limit: query.bodyBudget)
-            where !matched.contains(Int64(listed.id)) && HitMerge.within(NotesSearcher.date(of: listed), since: query.since, until: query.until) {
+            where !matched.contains(String(listed.id)) && HitMerge.within(NotesSearcher.date(of: listed), since: query.since, until: query.until) {
                 guard let note = try? store.note(id: listed.id) else { unread += 1; continue }
                 if Excerpt.matches(text, in: note.text) { found.append(hit(note, excerpt: Excerpt.around(text, in: note.text))) }
             }
@@ -40,7 +40,7 @@ struct NotesSearcher: RecallSearching {
     static func date(of note: Note) -> Date { note.modified ?? note.created ?? .distantPast }
 
     private func hit(_ note: Note, excerpt: String) -> RecallHit {
-        RecallHit(source: .notes, id: Int64(note.id), date: NotesSearcher.date(of: note), isFromMe: true,
+        RecallHit(source: .notes, id: String(note.id), date: NotesSearcher.date(of: note), isFromMe: true,
                   title: note.title, excerpt: excerpt)
     }
 }

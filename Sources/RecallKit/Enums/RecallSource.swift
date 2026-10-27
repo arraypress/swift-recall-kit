@@ -15,8 +15,16 @@ public enum RecallSource: String, Sendable, Codable, CaseIterable, Hashable, Com
     case messages
     /// WhatsApp's Mac app.
     case whatsapp
+    /// Phone and FaceTime calls — for a person only: a call holds no words.
+    case calls
+    /// Calendar events: titles, places, notes, and who was invited.
+    case calendar
+    /// Reminders, done or not: titles and notes.
+    case reminders
     /// Apple Notes: titles and the start of each note, and optionally whole notes.
     case notes
+    /// Voice Memos: titles, and what was said where Apple transcribed it.
+    case memos
 
     /// The sources in a fixed order, so results and reports read the same every time.
     public static func < (lhs: RecallSource, rhs: RecallSource) -> Bool {

@@ -17,7 +17,7 @@ struct WhatsAppSearcher: RecallSearching {
     let store: WhatsAppStore
     let source = RecallSource.whatsapp
 
-    func hits(for query: RecallQuery, person: RecallPerson?) throws -> (hits: [RecallHit], unreadBodies: Int) {
+    func hits(for query: RecallQuery, person: RecallPerson?) async throws -> (hits: [RecallHit], unreadBodies: Int) {
         var addresses: [String]?
         if let person {
             let directory = store.directory
@@ -31,7 +31,7 @@ struct WhatsAppSearcher: RecallSearching {
         let messages = try store.messages(MessageQuery(text: query.text, fromJIDs: addresses, since: query.since,
                                                        until: query.until, limit: query.limit))
         let hits = messages.map { message in
-            RecallHit(source: .whatsapp, id: message.id, date: message.date,
+            RecallHit(source: .whatsapp, id: String(message.id), date: message.date,
                       from: message.isFromMe ? "me" : message.sender.map { $0.name ?? $0.phone ?? $0.jid },
                       address: message.isFromMe ? nil : message.sender.map { $0.phone ?? $0.jid },
                       isFromMe: message.isFromMe, title: titles[message.chatID], conversation: message.chatID,
