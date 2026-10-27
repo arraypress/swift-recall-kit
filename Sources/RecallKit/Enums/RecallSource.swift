@@ -29,6 +29,8 @@ public enum RecallSource: String, Sendable, Codable, CaseIterable, Hashable, Com
     case journal
     /// Freeform: what is written on boards — text, sticky notes, table cells, links.
     case freeform
+    /// Books: highlighted passages and the notes written on them.
+    case books
 
     /// The sources in a fixed order, so results and reports read the same every time.
     public static func < (lhs: RecallSource, rhs: RecallSource) -> Bool {

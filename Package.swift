@@ -22,6 +22,7 @@ let package = Package(
         .package(url: "https://github.com/arraypress/swift-call-log.git", from: "0.1.0"),
         .package(url: "https://github.com/arraypress/swift-apple-journal.git", from: "0.1.0"),
         .package(url: "https://github.com/arraypress/swift-apple-freeform.git", from: "0.1.0"),
+        .package(url: "https://github.com/arraypress/swift-apple-books.git", from: "0.1.1"),
         // A person's name to their phones and email addresses.
         .package(url: "https://github.com/arraypress/swift-contacts.git", from: "0.1.1"),
     ],
@@ -38,6 +39,7 @@ let package = Package(
                 .product(name: "CallLog", package: "swift-call-log"),
                 .product(name: "AppleJournal", package: "swift-apple-journal"),
                 .product(name: "AppleFreeform", package: "swift-apple-freeform"),
+                .product(name: "AppleBooks", package: "swift-apple-books"),
                 .product(name: "ContactsKit", package: "swift-contacts"),
             ]
         ),

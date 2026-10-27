@@ -1,7 +1,7 @@
 # Swift Recall Kit
 
 One search across everything said and written on a Mac — Mail, Messages,
-WhatsApp, calls, Calendar, Reminders, Notes, Voice Memos, Journal and Freeform — by
+WhatsApp, calls, Calendar, Reminders, Notes, Voice Memos, Journal, Freeform and Books — by
 words, by person, or both. Read-only, on this Mac: each source is read through its own
 library, nothing is sent or kept.
 
@@ -29,6 +29,7 @@ found.person    // names: ["Alex Rivera"], phones: [...], emails: [...]
 | Voice Memos | [swift-voice-recordings](https://github.com/arraypress/swift-voice-recordings) | title, and what was said in Apple's transcript — with the moment (`at`) |
 | Journal | [swift-apple-journal](https://github.com/arraypress/swift-apple-journal) | title and words, map places, recorded and handwritten words |
 | Freeform | [swift-apple-freeform](https://github.com/arraypress/swift-apple-freeform) | text boxes, sticky notes, table cells and links — dated by the board's last activity, `parent` = the board |
+| Books | [swift-apple-books](https://github.com/arraypress/swift-apple-books) | highlighted passages and their notes — titled by the book and chapter, dated when made, `parent` = the book |
 
 ## A person is every address they have
 
@@ -40,7 +41,7 @@ address book's, the ones people chose for themselves), so its directory is
 asked too, and each address is searched with its pair (WhatsApp gives some
 people a second, `@lid`, address). Mail is searched by the person's email
 addresses, or by name when Contacts has none. Notes have no sender: a person
-search skips them, and says so — as do Reminders, Voice Memos, Journal and Freeform. Calls are the
+search skips them, and says so — as do Reminders, Voice Memos, Journal, Freeform and Books. Calls are the
 other way round: they hold no words, so only a person search finds them ("when
 did Alex last call?"), matched by number (`+44 7700 900123` is `07700 900123`).
 An event is a person's when they were invited (by email, or a name holding what
@@ -84,8 +85,8 @@ word edges with "…", matched ignoring case and accents.
 
 The rules are tested with no store opened — excerpts, people, merging, a whole
 search over stand-in sources, the mail rules — on invented names and messages:
-22 tests, and every rule broken on purpose is caught (25 of 25 mutations).
-Checked by hand on a real Mac (read-only, nothing recorded): all ten sources
+23 tests, and every rule broken on purpose is caught (30 of 30 mutations).
+Checked by hand on a real Mac (read-only, nothing recorded): all eleven sources
 readable, a common word found across them, an unknown name skipped with each
 source's reason.
 

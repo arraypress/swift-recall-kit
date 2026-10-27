@@ -1,5 +1,5 @@
 {
-  "originHash" : "3c655e7ca3f2e28b09d74d7eb248230aa31541482c8079826e586b791e9ccf73",
+  "originHash" : "46a41e74f58e96317b735fec22f22ee7c4f65ad6f0bbfc0c3c30e5d37cc7d6f2",
   "pins" : [
     {
       "identity" : "swift-agenda-kit",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "bd9564659fd17dff22679bc24fb46283baa9defc",
         "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swift-apple-books",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arraypress/swift-apple-books.git",
+      "state" : {
+        "revision" : "77fd3920da170477193afd177b0d45e774a0bb85",
+        "version" : "0.1.1"
       }
     },
     {
